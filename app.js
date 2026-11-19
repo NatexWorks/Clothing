@@ -5,7 +5,7 @@ const $$=(selector,root=document)=>[...root.querySelectorAll(selector)];
 const escapeHtml=(value='')=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const safeImage=(value)=>/^https:\/\//i.test(String(value||''))?value:'';
 const floorData=[
-  {id:'ground',label:'GROUND FLOOR',title:'The welcome',audience:'Everyone',categories:['New arrivals','Accessories','The house'],progress:.31},
+  {id:'ground',label:'GROUND FLOOR',title:'New arrivals',audience:'Everyone',categories:['T-shirts','Casual shirts','Jeans','Trousers','Jackets','Accessories'],progress:.31},
   {id:'first',label:'FIRST FLOOR',title:'The men’s floor',audience:'Men',categories:['T-shirts','Casual shirts','Formal shirts','Jeans','Trousers','Jackets','Blazers'],progress:.59},
   {id:'second',label:'SECOND FLOOR',title:'The women’s floor',audience:'Women',categories:['T-shirts','Casual shirts','Formal shirts','Jeans','Trousers','Jackets','Blazers'],progress:.71},
   {id:'third',label:'THIRD FLOOR',title:'The children’s floor',audience:'Children',categories:['T-shirts','Casual shirts','Jeans','Jackets'],progress:.82},
@@ -171,6 +171,26 @@ function buildLift(){
     const bulb=new THREE.Mesh(new THREE.SphereGeometry(.055,8,8),mat(level===0?'#dbcb99':'#8b887c',.28,.2));bulb.position.set(-7.05,y,-2.055);scene.add(bulb);
   }
 }
+function clothingShape(width,height,outerwear=false){
+  const w=width/2,h=height/2,shape=new THREE.Shape();
+  shape.moveTo(-w*.32,h);shape.lineTo(w*.32,h);shape.lineTo(w*.54,h*.67);shape.lineTo(w,h*.43);shape.lineTo(w*.82,h*.08);shape.lineTo(w*.59,h*.18);shape.lineTo(w*.58,-h);shape.lineTo(-w*.58,-h);shape.lineTo(-w*.59,h*.18);shape.lineTo(-w*.82,h*.08);shape.lineTo(-w,h*.43);shape.lineTo(-w*.54,h*.67);shape.closePath();
+  if(outerwear){shape.moveTo(-w*.3,-h);shape.lineTo(w*.3,-h);shape.lineTo(w*.25,-h*.38);shape.lineTo(-w*.25,-h*.38);shape.closePath()}
+  return shape;
+}
+function foldedShirtShape(width,height){
+  const w=width/2,h=height/2,shape=new THREE.Shape();
+  shape.moveTo(-w*.32,h);shape.lineTo(w*.32,h);shape.lineTo(w*.53,h*.66);shape.lineTo(w,h*.42);shape.lineTo(w*.82,h*.08);shape.lineTo(w*.59,h*.18);shape.lineTo(w*.58,-h);shape.lineTo(-w*.58,-h);shape.lineTo(-w*.59,h*.18);shape.lineTo(-w*.82,h*.08);shape.lineTo(-w,h*.42);shape.lineTo(-w*.53,h*.66);shape.closePath();
+  return shape;
+}
+function clothingMesh(width,height,material,outerwear=false,depth=.1){
+  const geometry=new THREE.ExtrudeGeometry(clothingShape(width,height,outerwear),{depth,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.018,bevelThickness:.018});
+  geometry.center();const mesh=new THREE.Mesh(geometry,material);mesh.castShadow=true;return mesh;
+}
+function trouserMesh(width,height,material,depth=.11){
+  const w=width/2,h=height/2,shape=new THREE.Shape();
+  shape.moveTo(-w*.48,h);shape.lineTo(w*.48,h);shape.lineTo(w*.43,-h);shape.lineTo(w*.08,-h);shape.lineTo(0,-h*.12);shape.lineTo(-w*.08,-h);shape.lineTo(-w*.43,-h);shape.closePath();
+  const geometry=new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.014,bevelThickness:.014});geometry.center();const mesh=new THREE.Mesh(geometry,material);mesh.castShadow=true;return mesh;
+}
 function mannequin(parent,product,x,y,z,scale=1){
   const group=new THREE.Group();group.position.set(x,y,z);group.scale.setScalar(scale);parent.add(group);
   const fabric=mat(product?.mannequinColor||'#b7a68d',.8,0);
@@ -185,28 +205,47 @@ function mannequin(parent,product,x,y,z,scale=1){
     const arm=new THREE.Mesh(new THREE.CylinderGeometry(.09,.13,.94,10),skin);arm.position.set(side*.47,1.7,0);arm.rotation.z=side*-.11;group.add(arm);
     const hand=new THREE.Mesh(new THREE.SphereGeometry(.09,10,8),skin);hand.position.set(side*.51,1.22,.015);group.add(hand);
   }
-  const torso=new THREE.Mesh(new THREE.CylinderGeometry(.32,.43,.92,16,1,false),fabric);torso.position.y=1.68;group.add(torso);
-  const collar=new THREE.Mesh(new THREE.CylinderGeometry(.17,.21,.09,12),mat('#eee4d2'));collar.position.set(0,2.17,0);group.add(collar);
+  const torso=clothingMesh(.92,1.12,fabric,/Jacket|Blazer/i.test(product?.category||''),.16);torso.position.set(0,1.68,.035);group.add(torso);
+  const collar=new THREE.Mesh(new THREE.TorusGeometry(.13,.035,6,12,Math.PI),mat('#eee4d2'));collar.rotation.x=Math.PI/2;collar.position.set(0,2.19,.12);group.add(collar);
+  const buttonMat=mat('#e8dfcf',.35,.2);
+  for(let i=0;i<4;i++){const button=new THREE.Mesh(new THREE.SphereGeometry(.024,7,6),buttonMat);button.position.set(0,2.02-i*.15,.145);group.add(button)}
+  const pocket=box(group,'garment chest pocket',[.18,.17,.025],[-.22,1.81,.13],fabric);pocket.material=mat(product?.mannequinColor||'#b7a68d',.9);
   const neck=new THREE.Mesh(new THREE.CylinderGeometry(.09,.1,.22,10),skin);neck.position.y=2.28;group.add(neck);
   const head=new THREE.Mesh(new THREE.SphereGeometry(.22,16,14),mat('#c9b99f'));head.scale.set(.88,1.17,.9);head.position.y=2.57;group.add(head);
-  if(product?.category==='Trousers'||product?.category==='Jeans'){
-    for(const side of [-1,1]){const trouser=new THREE.Mesh(new THREE.CylinderGeometry(.11,.115,.72,9),fabric);trouser.position.set(side*.16,.94,.025);group.add(trouser)}
+  if(/Trousers|Jeans/i.test(product?.category||'')){
+    const trousers=trouserMesh(.62,.88,fabric,.17);trousers.position.set(0,.96,.07);group.add(trousers);
+    for(let i=0;i<8;i++)box(group,`trouser stitch ${i}`,[.012,.012,.018],[i<4?-.22:.22,.54+(i%4)*.11,.17],mats.light);
   }
   const pick=new THREE.Mesh(new THREE.SphereGeometry(.72,12,8),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));pick.position.y=1.55;pick.userData.productId=product?.id;group.add(pick);if(product)clickable.push(pick);
   mannequinGroups.push(group);return group;
+}
+function garmentStyle(product){
+  if(/Jeans|Trousers/i.test(product.category))return 'trouser';
+  if(/Jacket|Blazer/i.test(product.category))return 'coat';
+  if(product.id.includes('scarf')||product.name.toLowerCase().includes('wrap'))return 'scarf';
+  if(product.id.includes('bag')||product.name.toLowerCase().includes('tote'))return 'bag';
+  return 'shirt';
 }
 function garment(parent,color,x,y,z,shape='shirt'){
   const fabric=mat(color,.88,0);const hanger=mat('#a28c6c',.34,.4);
   const group=new THREE.Group();group.position.set(x,y,z);parent.add(group);
   const width=shape==='coat'?.63:.54,height=shape==='trouser'?.72:.73;
   if(shape==='trouser'){
-    box(group,'hanging trouser waist',[width,.1,.12],[0,.2,0],fabric);
-    box(group,'hanging trouser left',[.22,.7,.13],[-.14,-.16,0],fabric);
-    box(group,'hanging trouser right',[.22,.7,.13],[.14,-.16,0],fabric);
+    const pants=trouserMesh(width,height,fabric,.12);pants.position.y=-.02;group.add(pants);
+    box(group,'hanging trouser waistband',[width,.085,.15],[0,.3,.015],fabric);
+    rod(group,[0,.23,.09],[0,-.32,.09],.008,hanger,5);
+  }else if(shape==='scarf'){
+    box(group,'folded scarf shoulder',[.45,.15,.1],[0,.12,0],fabric);
+    box(group,'scarf tail left',[.14,.55,.08],[-.12,-.22,0],fabric,{rotation:[0,0,-.08]});
+    box(group,'scarf tail right',[.14,.55,.08],[.12,-.22,.015],fabric,{rotation:[0,0,.08]});
+  }else if(shape==='bag'){
+    box(group,'canvas tote body',[.48,.45,.16],[0,-.04,0],fabric);
+    rod(group,[-.16,.18,0],[-.13,.4,0],.025,hanger,7);rod(group,[.16,.18,0],[.13,.4,0],.025,hanger,7);
   }else{
-    const body=box(group,'hanging clothing',[width,height,.14],[0,-.02,0],fabric);body.scale.set(1,1,1);
-    box(group,'garment shoulder left',[.25,.15,.14],[-width*.42,.25,0],fabric,{rotation:[0,0,-.55]});
-    box(group,'garment shoulder right',[.25,.15,.14],[width*.42,.25,0],fabric,{rotation:[0,0,.55]});
+    group.add(clothingMesh(width,height,fabric,shape==='coat',.12));
+    const placket=mat('#d9cbb3',.5,.08);
+    for(let i=0;i<4;i++){const button=new THREE.Mesh(new THREE.SphereGeometry(.015,6,5),placket);button.position.set(0,.19-i*.13,.075);group.add(button)}
+    box(group,'garment pocket',[.12,.12,.018],[width*.25,-.02,.07],fabric);
   }
   rod(group,[-.34,.48,0],[0,.62,0],.013,hanger,5);rod(group,[0,.62,0],[.34,.48,0],.013,hanger,5);rod(group,[0,.62,0],[0,.75,0],.013,hanger,5);
   return group;
@@ -222,7 +261,7 @@ function buildRack(floorProducts,floorIndex){
   const metal=mat('#8f7b5e',.37,.52);
   rod(rack,[-.25,.2,0],[-.25,2.1,0],.045,metal);rod(rack,[2.55,.2,0],[2.55,2.1,0],.045,metal);rod(rack,[-.25,2.1,0],[2.55,2.1,0],.045,metal);
   rod(rack,[-.45,.18,.12],[2.75,.18,.12],.036,metal);
-  floorProducts.slice(0,5).forEach((product,index)=>garment(rack,product.mannequinColor,.12+index*.52,1.65,0,product.category==='Jeans'||product.category==='Trousers'?'trouser':'shirt'));
+  floorProducts.slice(0,5).forEach((product,index)=>garment(rack,product.mannequinColor,.12+index*.52,1.65,0,garmentStyle(product)));
 }
 function buildWallShelves(floorProducts,floorIndex){
   const base=floorIndex*3.6;
@@ -262,7 +301,7 @@ function buildWallShelves(floorProducts,floorIndex){
   });
 }
 function buildFloorScene(floorId,index){
-  const levelY=index*3.6;const floorProducts=products.filter(item=>item.floorId===floorId);
+  const levelY=index*3.6;const floorProducts=products.filter(item=>item.floorId===floorId).sort((a,b)=>Number(a.category==='Accessories')-Number(b.category==='Accessories'));
   buildWallShelves(floorProducts,index);
   const displayProducts=floorProducts.slice(0,4);
   displayProducts.forEach((product,i)=>{
@@ -402,7 +441,7 @@ function jumpToProduct(floorId,category){
 $$('[data-floor-jump]').forEach(button=>button.addEventListener('click',()=>jumpToFloor(button.dataset.floorJump)));
 
 function renderDock(){
-  const allFloorItems=products.filter(item=>item.floorId===activeFloor);
+  const allFloorItems=products.filter(item=>item.floorId===activeFloor).sort((a,b)=>Number(a.category==='Accessories')-Number(b.category==='Accessories'));
   const items=allFloorItems.filter(item=>!activeCategory||item.category===activeCategory).slice(0,24);
   $('#dock-products').innerHTML=items.map(product=>`<button class="dock-product" data-product-id="${escapeHtml(product.id)}" aria-label="View ${escapeHtml(product.name)}"><img src="${safeImage(product.image)}" alt="" loading="lazy"/><strong>${escapeHtml(product.name)}</strong><small>₹${Number(product.price).toLocaleString('en-IN')} · ${escapeHtml(product.color)}</small></button>`).join('');
   const floor=floorData.find(item=>item.id===activeFloor);$('#dock-title').textContent=activeCategory||floor?.title||'New arrivals';

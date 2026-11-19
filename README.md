@@ -4,13 +4,13 @@ A single-page, scroll-driven 3D store concept. The visitor begins at the ground-
 
 ## Floors
 
-- Ground: welcome, new arrivals, accessories
+- Ground: new arrivals, tees, shirts, jeans, trousers, jackets, and accessories
 - First: men
 - Second: women
 - Third: children
 - Fourth: grandparents
 
-The scene is a browser-rendered Three.js experience. Catalog data lives in `data/products.json` for local use. The folded garments on shelves are 3D scene objects; product detail cards use illustrative demo imagery and listings, not verified inventory or final product photography.
+The scene is a browser-rendered Three.js experience. Catalog data lives in `data/products.json` for local use. The ground floor includes five garment styles; men’s, women’s, children’s, and grandparents’ floors include their apparel categories. Folded garments and hanging pieces are modeled in the scene. Product detail cards use illustrative demo imagery and listings, not verified inventory or final product photography.
 
 ## Run locally
 
