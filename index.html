@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3efe7" />
+    <meta name="description" content="Enter Maison Form: a considered clothing store, imagined as a four-level architectural world." />
+    <title>Maison Form — A New Way to Wear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 9V6a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="9" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
+    </svg>
+    <div class="announcement"><span>COMPLIMENTARY SHIPPING ON ORDERS OVER ₹8,000</span><span class="announcement-right">A STORE IN FOUR DIMENSIONS <span>↗</span></span></div>
+    <header class="site-header" id="top">
+      <button class="icon-button menu-toggle" aria-label="Open menu" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
+      <a class="wordmark" href="#top" aria-label="Maison Form home">MAISON <span>FORM</span><i>®</i></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#collection">Collection</a><a href="#architecture">The house</a><a href="#story">Our approach</a>
+      </nav>
+      <div class="header-actions"><button class="text-action search-toggle">Search <span>⌕</span></button><button class="bag-button" aria-label="Open shopping bag"><svg><use href="#i-bag"/></svg><span>Bag</span><b class="bag-count">0</b></button></div>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> THE MAISON FORM EXPERIENCE — EST. 2026</p>
+          <h1 id="hero-title">A new way<br />to <em>wear.</em></h1>
+          <p class="hero-intro">Considered pieces. Room to explore.<br />Welcome to a store that moves with you.</p>
+          <a class="pill-link dark-pill" href="#collection">Explore the collection <svg><use href="#i-arrow"/></svg></a>
+          <div class="hero-footnote"><span>01 / 04</span><span>SCROLL TO BEGIN <i class="scroll-line"></i></span></div>
+        </div>
+        <div class="hero-scene" aria-label="Architectural view of a warm, four-level clothing store">
+          <div class="scene-label scene-label-top"><span>THE HOUSE</span><b>18° 32′ N — 73° 51′ E</b></div>
+          <div class="scene-glow"></div>
+          <div class="store-volume">
+            <div class="store-back"></div><div class="store-ceiling"></div>
+            <div class="store-upper upper-one"><span>01</span><b>THE EDIT</b><i></i></div>
+            <div class="store-upper upper-two"><span>02</span><b>EVERYDAY</b><i></i></div>
+            <div class="store-upper upper-three"><span>03</span><b>AFTER HOURS</b><i></i></div>
+            <div class="store-ground"><span class="ground-title">MAISON<br /><i>FORM</i></span><span class="ground-sub">A DIFFERENT KIND<br />OF DRESSING ROOM</span><div class="rack rack-a"><i></i><i></i><i></i><i></i><i></i></div><div class="rack rack-b"><i></i><i></i><i></i><i></i></div><div class="plinth"><span>FORM<br />NO. 01</span></div></div>
+            <div class="staircase"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="store-front"><div class="front-pane"></div><div class="front-pane"></div><div class="front-pane"></div><div class="front-door"><span>MF</span></div></div>
+            <div class="floor-shadow"></div>
+          </div>
+          <div class="scene-caption"><span>GROUND FLOOR · PUNE, INDIA</span><span>FIG. 001 — THE HOUSE</span></div>
+          <button class="scene-hotspot" data-scroll="#architecture" aria-label="Explore the store architecture"><span>+</span><small>EXPLORE THE HOUSE</small></button>
+        </div>
+        <span class="hero-side-note">DESIGNED TO BE DISCOVERED</span>
+      </section>
+
+      <section class="ticker" aria-label="Brand statement"><div class="ticker-track"><span>MADE TO MOVE</span><i>✳</i><span>MADE TO LAST</span><i>✳</i><span>MADE TO BE YOURS</span><i>✳</i><span>MADE TO MOVE</span><i>✳</i><span>MADE TO LAST</span><i>✳</i><span>MADE TO BE YOURS</span><i>✳</i></div></section>
+
+      <section class="collection section-pad" id="collection">
+        <div class="section-heading"><div><p class="eyebrow">THE FIRST EDIT · 001</p><h2>Good things,<br /><em>well chosen.</em></h2></div><p class="section-aside">A wardrobe that earns its place.<br />Built around pieces you’ll reach for<br />again and again.</p></div>
+        <div class="filter-row"><div class="filter-tabs" role="tablist" aria-label="Filter collection"><button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All pieces <span>06</span></button><button class="filter-tab" data-filter="essential" role="tab" aria-selected="false">Everyday</button><button class="filter-tab" data-filter="tailored" role="tab" aria-selected="false">Tailored</button><button class="filter-tab" data-filter="outerwear" role="tab" aria-selected="false">Outerwear</button></div><button class="sort-button">SORT BY <span>FEATURED⌄</span></button></div>
+        <div class="product-grid" id="product-grid" aria-live="polite"></div>
+        <div class="collection-bottom"><span>06 CONSIDERED PIECES</span><a href="#collection" class="underlined-link">View the full collection <svg><use href="#i-arrow"/></svg></a></div>
+      </section>
+
+      <section class="house" id="architecture">
+        <div class="house-copy"><p class="eyebrow">MORE THAN A STORE · A PLACE TO LAND</p><h2>Take the<br /><em>long way up.</em></h2><p>Four floors, one continuous journey. Wander through the house at your own pace, discover a new point of view on every level, and find the pieces that feel like you.</p><button class="pill-link light-pill" data-scroll="#floor-guide">Explore the house <svg><use href="#i-arrow"/></svg></button><div class="house-index"><span>18 × 14 M</span><span>FOUR LEVELS</span><span>ONE OPEN HOUSE</span></div></div>
+        <div class="house-art"><div class="house-art-sun"></div><div class="art-building"><div class="art-floor art-floor-4"><b>04</b><span>THE STUDIO</span><i></i></div><div class="art-floor art-floor-3"><b>03</b><span>AFTER HOURS</span><i></i></div><div class="art-floor art-floor-2"><b>02</b><span>EVERYDAY</span><i></i></div><div class="art-floor art-floor-1"><b>01</b><span>THE EDIT</span><i></i></div><div class="art-floor art-floor-0"><b>GF</b><span>WELCOME IN</span><i></i></div><div class="art-stair"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="art-elevator"><span>⌃</span><i>MF</i><span>⌄</span></div><div class="art-plants">✳</div></div><span class="art-note">AN OPEN INVITATION TO STAY AWHILE</span></div>
+      </section>
+
+      <section class="floor-guide section-pad" id="floor-guide">
+        <div class="section-heading floor-heading"><div><p class="eyebrow">YOUR VISIT, YOUR PACE</p><h2>Choose your<br /><em>own level.</em></h2></div><p class="section-aside">Take the staircase or the lift.<br />There’s no wrong way to get<br />where you’re going.</p></div>
+        <div class="floor-layout"><div class="floor-list" role="tablist" aria-label="Store floors">
+          <button class="floor-option selected" data-floor="0" role="tab" aria-selected="true"><span class="floor-num">GF</span><span class="floor-name"><b>Ground floor</b><small>The welcome · New arrivals</small></span><svg><use href="#i-arrow"/></svg></button>
+          <button class="floor-option" data-floor="1" role="tab" aria-selected="false"><span class="floor-num">01</span><span class="floor-name"><b>The Edit</b><small>Essential layers · Everyday</small></span><svg><use href="#i-arrow"/></svg></button>
+          <button class="floor-option" data-floor="2" role="tab" aria-selected="false"><span class="floor-num">02</span><span class="floor-name"><b>After Hours</b><small>Soft tailoring · Occasion</small></span><svg><use href="#i-arrow"/></svg></button>
+          <button class="floor-option" data-floor="3" role="tab" aria-selected="false"><span class="floor-num">03</span><span class="floor-name"><b>The Studio</b><small>Made personal · The fitting room</small></span><svg><use href="#i-arrow"/></svg></button>
+        </div><div class="floor-preview"><div class="preview-image" id="preview-image"><span class="preview-kicker">YOU’RE ON</span><strong id="preview-title">THE GROUND FLOOR</strong><span class="preview-detail" id="preview-detail">Come in. Take a breath. You’re right where you need to be.</span><span class="preview-mark">MF<span>®</span></span></div><div class="floor-progress"><span id="floor-progress-text">GROUND FLOOR · 00</span><div class="progress-track"><i id="progress-fill"></i></div><span>03</span></div></div></div>
+      </section>
+
+      <section class="manifesto" id="story"><div class="manifesto-mark">MF</div><p class="eyebrow">A NOTE ON GETTING DRESSED</p><h2>Less, but<br /><em>more considered.</em></h2><p class="manifesto-copy">We believe the best wardrobe isn’t the biggest one. It’s the one that knows you. Pieces with a point of view, made for real days and the people who fill them.</p><a class="underlined-link" href="#top">A little more about us <svg><use href="#i-arrow"/></svg></a><span class="manifesto-foot">FORM FOLLOWS FEELING — ALWAYS</span></section>
+      <section class="newsletter"><div><p class="eyebrow">LETTERS FROM THE HOUSE</p><h2>A good thing<br /><em>in your inbox.</em></h2></div><form class="newsletter-form"><label for="email">A note when something new arrives. Never more than that.</label><div class="email-field"><input type="email" id="email" placeholder="Your email address" required /><button type="submit" aria-label="Subscribe"><svg><use href="#i-arrow"/></svg></button></div><small class="newsletter-feedback" aria-live="polite">By subscribing, you agree to receive occasional notes from Maison Form.</small></form></section>
+    </main>
+    <footer class="site-footer"><a class="wordmark footer-logo" href="#top">MAISON <span>FORM</span><i>®</i></a><span>MADE WITH INTENTION. WORN YOUR WAY.</span><div><a href="#story">Our approach</a><a href="#collection">Collection</a><a href="#top">Instagram ↗</a></div><small>© 2026 MAISON FORM</small></footer>
+    <div class="toast" role="status" aria-live="polite"></div>
+    <div class="overlay" aria-hidden="true"></div>
+    <aside class="bag-drawer" aria-label="Shopping bag" aria-hidden="true"><div class="drawer-head"><div><p class="eyebrow">YOUR SELECTION</p><h2>Your bag <span class="drawer-count">(0)</span></h2></div><button class="icon-button drawer-close" aria-label="Close bag"><svg><use href="#i-close"/></svg></button></div><div class="bag-items"></div><div class="empty-bag"><span class="empty-mark">MF</span><p>Your bag is taking a little breather.</p><a href="#collection" class="underlined-link close-bag-link">Find something you love <svg><use href="#i-arrow"/></svg></a></div><div class="bag-bottom"><div><span>SUBTOTAL</span><b class="bag-subtotal">₹0</b></div><button class="checkout-button">CONTINUE TO CHECKOUT <svg><use href="#i-arrow"/></svg></button><small>Taxes and shipping calculated at checkout.</small></div></aside>
+  </body>
+</html>

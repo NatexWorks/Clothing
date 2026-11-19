@@ -1,14 +1,16 @@
-# Premium 3D Clothing Store
+# Maison Form — Premium 3D Clothing Store
 
-An upcoming immersive online clothing store with a 3D shopping experience.
+An immersive, single-page clothing store concept built around a warm architectural house, a considered apparel edit, and a guided four-level shopping journey.
 
-## Project status
+## Run locally
 
-Repository setup is underway. Website implementation has not started.
+Open `index.html` in a modern browser. Product photography and fonts load from their respective CDNs, so an internet connection is needed for those assets.
 
-## Planned direction
+## Experience
 
-- Single-page, scroll-based shopping experience
-- 3D store environment and clothing catalogue
-- Product images matched to the selected item and colour
-- Backend integration planned for a later phase
+- Responsive storefront with a layered, perspective-based 3D house illustration
+- Six-item clothing edit with category filters and product colour labels
+- Interactive bag drawer, floor selector, search, and newsletter form
+- Planned next phase: real product catalogue, verified colour-matched imagery, and backend integration
+
+The current catalogue and checkout are demonstration content; checkout is not connected to a payment service.
