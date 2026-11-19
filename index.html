@@ -3,96 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f3efe7" />
-    <meta name="description" content="Enter Maison Form: a considered clothing store, imagined as a four-level architectural world." />
-    <title>Maison Form — A New Way to Wear</title>
+    <meta name="theme-color" content="#171714" />
+    <meta name="description" content="Scroll into Maison Form: a story-led 3D clothing store. Meet the house, find your floor, and let the in-store stylist guide you." />
+    <title>Maison Form — Step Inside</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="app.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/overrides.css" />
+    <script type="module" src="/app.js"></script>
   </head>
   <body>
-    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-      <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 9V6a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
-      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
-      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
-      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
-      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="9" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/></symbol>
-    </svg>
-    <div class="announcement"><span>COMPLIMENTARY SHIPPING ON ORDERS OVER ₹8,000</span><span class="announcement-right">A STORE IN FOUR DIMENSIONS <span>↗</span></span></div>
-    <header class="site-header" id="top">
-      <button class="icon-button menu-toggle" aria-label="Open menu" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
-      <a class="wordmark" href="#top" aria-label="Maison Form home">MAISON <span>FORM</span><i>®</i></a>
-      <nav class="main-nav" aria-label="Main navigation">
-        <a href="#collection">Collection</a><a href="#architecture">The house</a><a href="#story">Our approach</a>
-      </nav>
-      <div class="header-actions"><button class="text-action search-toggle">Search <span>⌕</span></button><button class="bag-button" aria-label="Open shopping bag"><svg><use href="#i-bag"/></svg><span>Bag</span><b class="bag-count">0</b></button></div>
+    <header class="topbar">
+      <a class="brand" href="#arrival" aria-label="Maison Form, beginning"><span class="brand-mark">MF</span><span>MAISON <b>FORM</b></span></a>
+      <div class="topbar-center"><span class="live-dot"></span><span>THE HOUSE IS OPEN</span></div>
+      <div class="topbar-actions"><button class="bag-toggle" aria-label="Open shopping bag">BAG <span class="bag-count">0</span></button></div>
     </header>
+
     <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-dot"></span> THE MAISON FORM EXPERIENCE — EST. 2026</p>
-          <h1 id="hero-title">A new way<br />to <em>wear.</em></h1>
-          <p class="hero-intro">Considered pieces. Room to explore.<br />Welcome to a store that moves with you.</p>
-          <a class="pill-link dark-pill" href="#collection">Explore the collection <svg><use href="#i-arrow"/></svg></a>
-          <div class="hero-footnote"><span>01 / 04</span><span>SCROLL TO BEGIN <i class="scroll-line"></i></span></div>
-        </div>
-        <div class="hero-scene" aria-label="Architectural view of a warm, four-level clothing store">
-          <div class="scene-label scene-label-top"><span>THE HOUSE</span><b>18° 32′ N — 73° 51′ E</b></div>
-          <div class="scene-glow"></div>
-          <div class="store-volume">
-            <div class="store-back"></div><div class="store-ceiling"></div>
-            <div class="store-upper upper-one"><span>01</span><b>THE EDIT</b><i></i></div>
-            <div class="store-upper upper-two"><span>02</span><b>EVERYDAY</b><i></i></div>
-            <div class="store-upper upper-three"><span>03</span><b>AFTER HOURS</b><i></i></div>
-            <div class="store-ground"><span class="ground-title">MAISON<br /><i>FORM</i></span><span class="ground-sub">A DIFFERENT KIND<br />OF DRESSING ROOM</span><div class="rack rack-a"><i></i><i></i><i></i><i></i><i></i></div><div class="rack rack-b"><i></i><i></i><i></i><i></i></div><div class="plinth"><span>FORM<br />NO. 01</span></div></div>
-            <div class="staircase"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="store-front"><div class="front-pane"></div><div class="front-pane"></div><div class="front-pane"></div><div class="front-door"><span>MF</span></div></div>
-            <div class="floor-shadow"></div>
+      <section class="journey" id="journey" aria-label="Scroll through the Maison Form virtual store">
+        <div class="world-stage">
+          <canvas id="store-world" aria-label="Interactive three dimensional clothing store"></canvas>
+          <div class="world-wash"></div>
+          <div class="world-topline"><span id="chapter-index">00 / 09</span><span class="world-location">MAISON FORM · PUNE</span></div>
+          <div class="story-caption" aria-live="polite">
+            <p class="caption-kicker" id="caption-kicker">THE HOUSE · 18 × 14 METRES</p>
+            <h1 id="caption-title">A different<br />kind of <em>store.</em></h1>
+            <p id="caption-body">Take a breath. Then take a step inside.</p>
+            <button class="caption-action" id="caption-action">STEP INSIDE <span>↓</span></button>
           </div>
-          <div class="scene-caption"><span>GROUND FLOOR · PUNE, INDIA</span><span>FIG. 001 — THE HOUSE</span></div>
-          <button class="scene-hotspot" data-scroll="#architecture" aria-label="Explore the store architecture"><span>+</span><small>EXPLORE THE HOUSE</small></button>
+          <div class="scroll-indicator"><span class="scroll-wheel"></span><span>KEEP SCROLLING TO WALK IN</span></div>
+          <aside class="floor-panel" aria-label="Store floor guide">
+            <div class="floor-panel-head"><span>THE HOUSE</span><span>LEVEL GUIDE</span></div>
+            <nav class="floor-list" id="floor-list" aria-label="Choose a store floor">
+              <button class="floor-link active" data-floor-jump="ground"><span class="floor-index">G</span><span><b>Ground</b><small>Welcome · New arrivals</small></span><i></i></button>
+              <button class="floor-link" data-floor-jump="first"><span class="floor-index">01</span><span><b>First floor</b><small>Men · Everyday to tailored</small></span><i></i></button>
+              <button class="floor-link" data-floor-jump="second"><span class="floor-index">02</span><span><b>Second floor</b><small>Women · The full wardrobe</small></span><i></i></button>
+              <button class="floor-link" data-floor-jump="third"><span class="floor-index">03</span><span><b>Third floor</b><small>Children · Little form</small></span><i></i></button>
+              <button class="floor-link" data-floor-jump="fourth"><span class="floor-index">04</span><span><b>Fourth floor</b><small>Grandparents · Easy classics</small></span><i></i></button>
+            </nav>
+            <div class="floor-active-info"><span class="active-eyebrow">YOU ARE NEAR</span><b id="active-floor-name">THE ENTRANCE</b><div id="active-categories" class="active-categories"></div></div>
+          </aside>
+          <div class="world-footer"><span class="world-dimensions">DOUBLE-HEIGHT ENTRY · U-STAIR + LANDING · LIFT</span><span class="world-progress"><i id="progress-fill"></i></span><span id="progress-percent">00%</span></div>
         </div>
-        <span class="hero-side-note">DESIGNED TO BE DISCOVERED</span>
+
+        <div class="chapter-track" aria-hidden="false">
+          <article class="chapter" id="arrival" data-scene="arrival" data-floor="ground" data-caption-kicker="THE HOUSE · 18 × 14 METRES" data-caption-title="A different|kind of <em>store.</em>" data-caption-body="Take a breath. Then take a step inside." data-caption-action="STEP INSIDE">
+            <span class="chapter-number">01</span><span class="chapter-label">OUTSIDE THE HOUSE</span>
+          </article>
+          <article class="chapter" id="threshold" data-scene="threshold" data-floor="ground" data-caption-kicker="THE DOOR IS OPENING" data-caption-title="Come a little|closer." data-caption-body="Walnut, warm light, and room enough to wander." data-caption-action="WALK IN">
+            <span class="chapter-number">02</span><span class="chapter-label">THE THRESHOLD</span>
+          </article>
+          <article class="chapter" id="ground-arrival" data-scene="ground" data-floor="ground" data-caption-kicker="GROUND FLOOR · THE WELCOME" data-caption-title="You’re|right where|you need to <em>be.</em>" data-caption-body="A double-height room. A first look around. New arrivals at the centre of it all." data-caption-action="MEET THE HOUSE">
+            <span class="chapter-number">03</span><span class="chapter-label">THE DOUBLE-HEIGHT ENTRY</span>
+          </article>
+          <article class="chapter" id="display" data-scene="display" data-floor="ground" data-caption-kicker="THE FIRST LOOK · NEW ARRIVALS" data-caption-title="Made to|meet you|<em>here.</em>" data-caption-body="Pieces on sculptural mannequins, close enough to notice the details." data-caption-action="EXPLORE NEW ARRIVALS">
+            <span class="chapter-number">04</span><span class="chapter-label">THE FIRST LOOK</span>
+          </article>
+          <article class="chapter" id="staircase" data-scene="staircase" data-floor="first" data-caption-kicker="A WAY UP, NEVER A RUSH" data-caption-title="Take the|long way <em>up.</em>" data-caption-body="A U-shaped staircase turns around its own landing. The lift is here whenever you need it." data-caption-action="CHOOSE A FLOOR">
+            <span class="chapter-number">05</span><span class="chapter-label">STAIRS · LANDING · LIFT</span>
+          </article>
+          <article class="chapter" id="menswear" data-scene="first" data-floor="first" data-caption-kicker="FIRST FLOOR · MEN" data-caption-title="A good|place to|<em>start.</em>" data-caption-body="T-shirts, shirts, denim, trousers, jackets and blazers. Find your everyday, then follow it somewhere new." data-caption-action="BROWSE THIS FLOOR">
+            <span class="chapter-number">06</span><span class="chapter-label">THE MEN’S FLOOR</span>
+          </article>
+          <article class="chapter" id="womenswear" data-scene="second" data-floor="second" data-caption-kicker="SECOND FLOOR · WOMEN" data-caption-title="Room to|make it|<em>yours.</em>" data-caption-body="Soft tailoring, easy layers, denim, occasion pieces, and space to try another point of view." data-caption-action="BROWSE THIS FLOOR">
+            <span class="chapter-number">07</span><span class="chapter-label">THE WOMEN’S FLOOR</span>
+          </article>
+          <article class="chapter" id="kidswear" data-scene="third" data-floor="third" data-caption-kicker="THIRD FLOOR · CHILDREN" data-caption-title="Little|things, big|<em>days.</em>" data-caption-body="Easy, comfortable pieces for curious people who are always on the move." data-caption-action="BROWSE THIS FLOOR">
+            <span class="chapter-number">08</span><span class="chapter-label">THE CHILDREN’S FLOOR</span>
+          </article>
+          <article class="chapter" id="heritage" data-scene="fourth" data-floor="fourth" data-caption-kicker="FOURTH FLOOR · GRANDPARENTS" data-caption-title="Comfort|with a|<em>point of view.</em>" data-caption-body="Familiar shapes, thoughtful fabric, and nothing that asks you to stand still." data-caption-action="BROWSE THIS FLOOR">
+            <span class="chapter-number">09</span><span class="chapter-label">THE HERITAGE FLOOR</span>
+          </article>
+          <article class="chapter" id="close" data-scene="close" data-floor="fourth" data-caption-kicker="YOU’VE FOUND YOUR WAY" data-caption-title="Stay a|little <em>longer.</em>" data-caption-body="Tell the in-store stylist what you have in mind. They’ll take you straight to the right floor." data-caption-action="ASK THE STYLIST">
+            <span class="chapter-number">10</span><span class="chapter-label">ONE LAST LOOK AROUND</span>
+          </article>
+        </div>
       </section>
 
-      <section class="ticker" aria-label="Brand statement"><div class="ticker-track"><span>MADE TO MOVE</span><i>✳</i><span>MADE TO LAST</span><i>✳</i><span>MADE TO BE YOURS</span><i>✳</i><span>MADE TO MOVE</span><i>✳</i><span>MADE TO LAST</span><i>✳</i><span>MADE TO BE YOURS</span><i>✳</i></div></section>
-
-      <section class="collection section-pad" id="collection">
-        <div class="section-heading"><div><p class="eyebrow">THE FIRST EDIT · 001</p><h2>Good things,<br /><em>well chosen.</em></h2></div><p class="section-aside">A wardrobe that earns its place.<br />Built around pieces you’ll reach for<br />again and again.</p></div>
-        <div class="catalog-controls"><label class="audience-select">SHOP FOR <select id="audience-filter" aria-label="Shop for"><option value="all">Everyone</option><option value="men">Men</option><option value="women">Women</option><option value="kids">Kids</option><option value="senior">Senior</option></select></label><button class="smart-toggle" aria-expanded="false">SMART FIND <span>＋</span></button></div><div class="smart-panel" hidden><label>OCCASION<select id="occasion-filter"><option value="all">Any occasion</option><option value="everyday">Everyday</option><option value="work">Work</option><option value="occasion">Occasion</option></select></label><label>MAXIMUM PRICE<select id="price-filter"><option value="all">No limit</option><option value="5000">₹5,000</option><option value="8000">₹8,000</option><option value="12000">₹12,000</option></select></label><label>FIT<select id="fit-filter"><option value="all">Any fit</option><option value="relaxed">Relaxed</option><option value="regular">Regular</option><option value="tailored">Tailored</option></select></label><button class="smart-clear">CLEAR PREFERENCES</button></div><div class="filter-row"><div class="filter-tabs" role="tablist" aria-label="Filter collection"><button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All pieces</button><button class="filter-tab" data-filter="tshirts" role="tab" aria-selected="false">T-shirts</button><button class="filter-tab" data-filter="casual-shirts" role="tab" aria-selected="false">Casual shirts</button><button class="filter-tab" data-filter="formal-shirts" role="tab" aria-selected="false">Formal shirts</button><button class="filter-tab" data-filter="jeans" role="tab" aria-selected="false">Jeans</button><button class="filter-tab" data-filter="trousers" role="tab" aria-selected="false">Trousers</button><button class="filter-tab" data-filter="jackets" role="tab" aria-selected="false">Jackets</button><button class="filter-tab" data-filter="blazers" role="tab" aria-selected="false">Blazers</button></div><label class="sort-button">SORT BY <select id="sort-products" aria-label="Sort products"><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="name">Name</option></select></label></div>
-        <div class="product-grid" id="product-grid" aria-live="polite"></div>
-        <div class="collection-bottom"><span class="collection-count">21 CONSIDERED PIECES</span><a href="#collection" class="underlined-link">Explore the edit <svg><use href="#i-arrow"/></svg></a></div>
+      <section class="product-dock" id="product-dock" aria-live="polite">
+        <div class="dock-heading"><div><span class="eyebrow">NEAR YOU · <b id="dock-floor">GROUND FLOOR</b></span><h2 id="dock-title">New arrivals</h2></div><button class="dock-close" aria-label="Close product selection">×</button></div>
+        <div class="dock-products" id="dock-products"></div>
       </section>
-
-      <section class="house" id="architecture">
-        <div class="house-copy"><p class="eyebrow">MORE THAN A STORE · A PLACE TO LAND</p><h2>Take the<br /><em>long way up.</em></h2><p>The ground floor opens into an 18 × 14 metre, double-height room. A U-shaped staircase turns around its own intermediate landing; a lift serves all four levels. Wander at your own pace and find the pieces that feel like you.</p><button class="pill-link light-pill" data-scroll="#floor-guide">Explore the house <svg><use href="#i-arrow"/></svg></button><div class="house-index"><span>18 × 14 M GROUND FLOOR</span><span>U-STAIR + LANDING</span><span>4 LEVELS · LIFT</span></div></div>
-        <div class="house-art"><div class="house-art-sun"></div><div class="art-building"><div class="art-floor art-floor-4"><b>04</b><span>THE STUDIO</span><i></i></div><div class="art-floor art-floor-3"><b>03</b><span>AFTER HOURS</span><i></i></div><div class="art-floor art-floor-2"><b>02</b><span>EVERYDAY</span><i></i></div><div class="art-floor art-floor-1"><b>01</b><span>THE EDIT</span><i></i></div><div class="art-floor art-floor-0"><b>GF</b><span>WELCOME IN</span><i></i></div><div class="art-stair" role="img" aria-label="U-shaped staircase with an intermediate landing"><div class="stair-flight flight-one"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="stair-landing">LANDING</div><div class="stair-flight flight-two"><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="art-elevator"><span>⌃</span><i>MF</i><span>⌄</span></div><div class="art-plants">✳</div></div><span class="art-note">AN OPEN INVITATION TO STAY AWHILE</span></div>
-      </section>
-
-      <section class="floor-guide section-pad" id="floor-guide">
-        <div class="section-heading floor-heading"><div><p class="eyebrow">YOUR VISIT, YOUR PACE</p><h2>Choose your<br /><em>own level.</em></h2></div><p class="section-aside">Take the staircase or the lift.<br />There’s no wrong way to get<br />where you’re going.</p></div>
-        <div class="floor-layout"><div class="floor-list" role="tablist" aria-label="Store floors">
-          <button class="floor-option selected" data-floor="0" role="tab" aria-selected="true"><span class="floor-num">GF</span><span class="floor-name"><b>Ground floor</b><small>The welcome · New arrivals</small></span><svg><use href="#i-arrow"/></svg></button>
-          <button class="floor-option" data-floor="1" role="tab" aria-selected="false"><span class="floor-num">01</span><span class="floor-name"><b>The Edit</b><small>Essential layers · Everyday</small></span><svg><use href="#i-arrow"/></svg></button>
-          <button class="floor-option" data-floor="2" role="tab" aria-selected="false"><span class="floor-num">02</span><span class="floor-name"><b>After Hours</b><small>Soft tailoring · Occasion</small></span><svg><use href="#i-arrow"/></svg></button>
-          <button class="floor-option" data-floor="3" role="tab" aria-selected="false"><span class="floor-num">03</span><span class="floor-name"><b>The Studio</b><small>Made personal · The fitting room</small></span><svg><use href="#i-arrow"/></svg></button>
-        </div><div class="floor-preview"><div class="preview-image" id="preview-image"><span class="preview-kicker">YOU’RE ON</span><strong id="preview-title">THE GROUND FLOOR</strong><span class="preview-detail" id="preview-detail">Come in. Take a breath. You’re right where you need to be.</span><span class="preview-mark">MF<span>®</span></span></div><div class="floor-progress"><span id="floor-progress-text">GROUND FLOOR · 00</span><div class="progress-track"><i id="progress-fill"></i></div><span>03</span></div></div></div>
-      </section>
-
-      <section class="manifesto" id="story"><div class="manifesto-mark">MF</div><p class="eyebrow">A NOTE ON GETTING DRESSED</p><h2>Less, but<br /><em>more considered.</em></h2><p class="manifesto-copy">We believe the best wardrobe isn’t the biggest one. It’s the one that knows you. Pieces with a point of view, made for real days and the people who fill them.</p><a class="underlined-link" href="#top">A little more about us <svg><use href="#i-arrow"/></svg></a><span class="manifesto-foot">FORM FOLLOWS FEELING — ALWAYS</span></section>
-      <section class="faq section-pad" id="help"><div class="faq-heading"><p class="eyebrow">A FEW USEFUL THINGS</p><h2>Good to<br /><em>know.</em></h2><p>Simple answers for a considered visit.</p></div><div class="faq-list"><details><summary>How does the four-floor store work?<span>＋</span></summary><p>Choose a floor in the house guide. The ground level is the welcome and new arrivals; the three upper levels hold The Edit, After Hours, and The Studio. The illustrated staircase includes a shared landing, and a lift serves all levels.</p></details><details><summary>How do I choose my size?<span>＋</span></summary><p>Open a product and use its size guide. The current catalogue is a visual demo, so fit notes and measurements are illustrative and will be replaced with verified product measurements.</p></details><details><summary>Can I place a real order today?<span>＋</span></summary><p>Not yet. The bag and checkout preview work in this prototype, but payments, order fulfilment, and the live product database are not connected.</p></details><details><summary>Where do the product images come from?<span>＋</span></summary><p>The starter catalogue uses illustrative editorial photography. Before launch, each colour and product variant needs its own verified image set from approved sources.</p></details></div></section>
-      <section class="newsletter"><div><p class="eyebrow">LETTERS FROM THE HOUSE</p><h2>A good thing<br /><em>in your inbox.</em></h2></div><form class="newsletter-form"><label for="email">A note when something new arrives. Never more than that.</label><div class="email-field"><input type="email" id="email" placeholder="Your email address" required /><button type="submit" aria-label="Subscribe"><svg><use href="#i-arrow"/></svg></button></div><small class="newsletter-feedback" aria-live="polite">Newsletter signup is a demo and does not store your email.</small></form></section>
+      <section class="end-note"><span class="end-monogram">MF</span><p class="eyebrow">MAISON FORM · PUNE</p><h2>Form follows<br /><em>feeling.</em></h2><a href="#arrival" class="return-link">WALK THROUGH AGAIN <span>↗</span></a><span class="end-foot">SCROLL TO RETURN TO THE STREET</span></section>
     </main>
-    <footer class="site-footer"><a class="wordmark footer-logo" href="#top">MAISON <span>FORM</span><i>®</i></a><span>MADE WITH INTENTION. WORN YOUR WAY.</span><div><a href="#story">Our approach</a><a href="#help">Help & sizing</a><a href="#collection">Collection</a><a href="#top">Instagram ↗</a></div><small>© 2026 MAISON FORM · DEMO STORE</small></footer>
-    <div class="toast" role="status" aria-live="polite"></div>
-    <div class="overlay" aria-hidden="true"></div>
-    <aside class="bag-drawer" aria-label="Shopping bag" aria-hidden="true"><div class="drawer-head"><div><p class="eyebrow">YOUR SELECTION</p><h2>Your bag <span class="drawer-count">(0)</span></h2></div><button class="icon-button drawer-close" aria-label="Close bag"><svg><use href="#i-close"/></svg></button></div><div class="bag-items"></div><div class="empty-bag"><span class="empty-mark">MF</span><p>Your bag is taking a little breather.</p><a href="#collection" class="underlined-link close-bag-link">Find something you love <svg><use href="#i-arrow"/></svg></a></div><div class="bag-bottom"><div><span>SUBTOTAL</span><b class="bag-subtotal">₹0</b></div><button class="checkout-button">CONTINUE TO CHECKOUT <svg><use href="#i-arrow"/></svg></button><small>Shipping is complimentary over ₹8,000. Checkout is a demo and does not collect payment.</small></div></aside>
-    <dialog class="product-dialog" aria-label="Product details"><button class="icon-button dialog-close" aria-label="Close product details"><svg><use href="#i-close"/></svg></button><div class="detail-layout"><div class="detail-gallery"><img class="detail-main-image" alt=""/><div class="detail-thumbs"></div></div><div class="detail-copy"><p class="eyebrow detail-kicker">THE MAISON FORM EDIT</p><h2 class="detail-name"></h2><p class="detail-type"></p><p class="detail-price"></p><p class="detail-description"></p><div class="detail-colours"><span>COLOUR <b class="detail-colour-name"></b></span><div class="detail-swatches"></div></div><div class="detail-sizes"><div><span>SELECT SIZE</span><button class="size-guide">Size guide</button></div><div class="size-options"></div><p class="size-error" aria-live="polite"></p></div><button class="detail-add">ADD TO BAG <span></span></button><div class="detail-notes"><p>Complimentary shipping over ₹8,000</p><p>Easy returns within 14 days</p><p>Thoughtfully made. Made to be worn.</p></div></div></div></dialog>
-    <dialog class="checkout-dialog" aria-label="Checkout preview"><button class="icon-button checkout-close" aria-label="Close checkout"><svg><use href="#i-close"/></svg></button><div class="checkout-shell"><div class="checkout-main"><p class="eyebrow">MAISON FORM · ORDER PREVIEW</p><h2>Make it <em>yours.</em></h2><div class="checkout-steps"><span class="step-active">01 · YOUR BAG</span><span>02 · CONFIRM</span></div><form class="checkout-form"><div class="delivery-preview"><span class="delivery-icon">⌖</span><div><b>Delivery details</b><p>Address collection will be available when order handling is connected.</p></div></div><div class="delivery-preview"><span class="delivery-icon">◇</span><div><b>Payment</b><p>No payment method is connected. This prototype will not charge you.</p></div></div><button class="place-order" type="submit">COMPLETE DEMO CHECKOUT <svg><use href="#i-arrow"/></svg></button><p class="checkout-disclaimer">This creates only an on-screen preview. No order, address, or payment information is sent or saved.</p></form><div class="order-confirmation" hidden><span>MF</span><p class="eyebrow">ORDER PREVIEW</p><h3>That looks <em>good.</em></h3><p>Your demo order summary is ready. Checkout is not connected to order fulfilment.</p><button class="confirmation-done">BACK TO THE HOUSE</button></div></div><aside class="checkout-summary"><p class="eyebrow">YOUR SELECTION</p><div class="checkout-items"></div><div class="summary-line"><span>Subtotal</span><b class="checkout-subtotal"></b></div><div class="summary-line"><span>Shipping</span><b class="checkout-shipping"></b></div><div class="summary-line total"><span>Total</span><b class="checkout-total"></b></div><p class="checkout-currency">Prices shown in INR · Taxes included</p></aside></div></dialog>
-    <dialog class="size-dialog" aria-label="Size guide"><button class="icon-button size-close" aria-label="Close size guide"><svg><use href="#i-close"/></svg></button><p class="eyebrow">FIND YOUR FORM</p><h2>Size guide</h2><p class="size-guide-note">Use these as a starting point. Product-specific measurements will be added with verified catalogue data.</p><div class="size-table-wrap"><table><thead><tr><th>SIZE</th><th>CHEST</th><th>WAIST</th><th>HIP</th></tr></thead><tbody><tr><th>XS</th><td>81–86 cm</td><td>66–71 cm</td><td>86–91 cm</td></tr><tr><th>S</th><td>86–91 cm</td><td>71–76 cm</td><td>91–97 cm</td></tr><tr><th>M</th><td>91–99 cm</td><td>76–84 cm</td><td>97–104 cm</td></tr><tr><th>L</th><td>99–107 cm</td><td>84–91 cm</td><td>104–112 cm</td></tr><tr><th>XL</th><td>107–115 cm</td><td>91–99 cm</td><td>112–120 cm</td></tr></tbody></table></div><p class="size-guide-foot">Measurements are body measurements, not garment dimensions. If between sizes, choose the fit you prefer.</p></dialog>
+
+    <aside class="stylist" id="stylist" aria-label="Maison Form in-store stylist">
+      <button class="stylist-launch" aria-expanded="false" aria-controls="stylist-panel"><span class="stylist-orb">✳</span><span class="launch-copy"><b>ASK THE STYLIST</b><small>Tell us what you have in mind</small></span><span class="launch-arrow">↗</span></button>
+      <section class="stylist-panel" id="stylist-panel" hidden>
+        <div class="stylist-head"><div><p class="eyebrow">YOUR IN-STORE GUIDE</p><h2>Find your <em>way.</em></h2></div><button class="stylist-close" aria-label="Close stylist">×</button></div>
+        <div class="stylist-status"><span class="live-dot"></span><span id="stylist-status-text">Here to help you explore the house</span></div>
+        <div class="chat-messages" id="chat-messages" aria-live="polite"><div class="chat-message assistant-message">Tell me who you’re shopping for, what you need, or how you want it to feel. I’ll take you to the right floor.</div></div>
+        <div class="suggestion-prompts"><button data-prompt="I need an easy outfit for work">Easy workwear</button><button data-prompt="Show me something comfortable for my grandparents">For grandparents</button></div>
+        <form class="stylist-form" id="stylist-form"><label class="visually-hidden" for="stylist-input">Ask the in-store stylist</label><input id="stylist-input" maxlength="500" autocomplete="off" placeholder="I’m looking for…" required/><button type="submit" aria-label="Send message">↑</button></form>
+        <p class="stylist-footnote" id="stylist-footnote">Recommendations are based on the current demo catalogue.</p>
+      </section>
+    </aside>
+
+    <dialog class="product-modal" id="product-modal"><button class="modal-close" aria-label="Close product details">×</button><div class="modal-photo-wrap"><img id="modal-photo" alt=""/></div><div class="modal-copy"><p class="eyebrow" id="modal-floor"></p><h2 id="modal-name"></h2><p id="modal-description"></p><div class="modal-meta"><span id="modal-color"></span><span id="modal-fit"></span></div><div class="modal-price" id="modal-price"></div><div class="size-label">CHOOSE A SIZE</div><div class="modal-sizes" id="modal-sizes"></div><p class="size-error" id="size-error" aria-live="polite"></p><button class="add-to-bag" id="add-to-bag" disabled>ADD TO BAG <span>↗</span></button><p class="modal-disclaimer">Illustrative catalogue entry. Product photography and stock are demo references.</p></div></dialog>
+    <aside class="bag-drawer" id="bag-drawer" aria-label="Shopping bag" aria-hidden="true"><div class="bag-head"><div><p class="eyebrow">YOUR SELECTION</p><h2>Your bag <span class="bag-total-count">(0)</span></h2></div><button class="bag-close" aria-label="Close bag">×</button></div><div class="bag-lines" id="bag-lines"></div><div class="bag-empty" id="bag-empty"><span>MF</span><p>Your bag is taking a little breath.</p></div><div class="bag-summary"><div><span>SUBTOTAL</span><b id="bag-subtotal">₹0</b></div><p>Checkout and delivery are not connected in this preview.</p><button class="checkout-preview" id="checkout-preview">CONTINUE · DEMO ONLY ↗</button></div></aside><div class="bag-scrim" id="bag-scrim"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
   </body>
 </html>

@@ -1,0 +1,5 @@
+.scroll-indicator{bottom:78px}
+.world-footer{bottom:23px}
+.topbar-center{justify-self:center}
+.topbar-actions{justify-self:end}
+@media(max-width:600px){.scroll-indicator{bottom:54px}.world-footer{bottom:10px}}
