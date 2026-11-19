@@ -1,6 +1,6 @@
 # Maison Form — immersive virtual clothing store
 
-A single-page, scroll-driven 3D store concept. Scroll through the entrance, double-height ground-floor atrium, apparel displays, U-shaped staircases with intermediate landings, elevator, and four audience floors. The right-side guide tracks the current floor; product mannequins, a shopping bag, and an AI stylist are included.
+A single-page, scroll-driven 3D store concept. The visitor begins at the ground-floor threshold of a 30 × 23 metre store, browses folded apparel on category-labelled wall shelving, and can select a category to move in for a closer look. Scroll through the double-height atrium, U-shaped staircases with intermediate landings, elevator, and four audience floors. Floor buttons animate the camera up the stair route; product selections open an animated detail view. A shopping bag preview and AI stylist are included.
 
 ## Floors
 
@@ -10,7 +10,7 @@ A single-page, scroll-driven 3D store concept. Scroll through the entrance, doub
 - Third: children
 - Fourth: grandparents
 
-The scene is a browser-rendered Three.js experience. Catalog data lives in `data/products.json` for local use. The included images and product listings are illustrative demo content, not verified inventory or final product photography.
+The scene is a browser-rendered Three.js experience. Catalog data lives in `data/products.json` for local use. The folded garments on shelves are 3D scene objects; product detail cards use illustrative demo imagery and listings, not verified inventory or final product photography.
 
 ## Run locally
 

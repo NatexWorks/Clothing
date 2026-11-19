@@ -6,10 +6,10 @@ const escapeHtml=(value='')=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;
 const safeImage=(value)=>/^https:\/\//i.test(String(value||''))?value:'';
 const floorData=[
   {id:'ground',label:'GROUND FLOOR',title:'The welcome',audience:'Everyone',categories:['New arrivals','Accessories','The house'],progress:.31},
-  {id:'first',label:'FIRST FLOOR',title:'The men’s floor',audience:'Men',categories:['T-shirts','Casual shirts','Formal shirts','Jeans','Trousers','Jackets','Blazers'],progress:.55},
-  {id:'second',label:'SECOND FLOOR',title:'The women’s floor',audience:'Women',categories:['T-shirts','Casual shirts','Formal shirts','Jeans','Trousers','Jackets','Blazers'],progress:.66},
-  {id:'third',label:'THIRD FLOOR',title:'The children’s floor',audience:'Children',categories:['T-shirts','Shirts','Jeans','Jackets'],progress:.77},
-  {id:'fourth',label:'FOURTH FLOOR',title:'The grandparents’ floor',audience:'Grandparents',categories:['Shirts','Trousers','Jackets','Blazers'],progress:.88},
+  {id:'first',label:'FIRST FLOOR',title:'The men’s floor',audience:'Men',categories:['T-shirts','Casual shirts','Formal shirts','Jeans','Trousers','Jackets','Blazers'],progress:.59},
+  {id:'second',label:'SECOND FLOOR',title:'The women’s floor',audience:'Women',categories:['T-shirts','Casual shirts','Formal shirts','Jeans','Trousers','Jackets','Blazers'],progress:.71},
+  {id:'third',label:'THIRD FLOOR',title:'The children’s floor',audience:'Children',categories:['T-shirts','Casual shirts','Jeans','Jackets'],progress:.82},
+  {id:'fourth',label:'FOURTH FLOOR',title:'The grandparents’ floor',audience:'Grandparents',categories:['Casual shirts','Trousers','Jackets','Blazers'],progress:.93},
 ];
 const chapters=$$('.chapter');
 const journey=$('#journey');
@@ -18,20 +18,23 @@ const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matche
 let products=[];
 let productsById=new Map();
 let activeFloor='ground';
+let activeCategory='';
 let activeChapter=0;
 let scrollProgress=0;
+let routeToken=0;
 let aiHistory=[];
 let busy=false;
 let selectedProduct=null;
 let selectedSize='';
 let cart=readCart();
 let currentLook=new THREE.Vector3(0,2,5);
+let categoryCameraTarget=null;
 
 const scene=new THREE.Scene();
 scene.background=new THREE.Color('#c8bca8');
 scene.fog=new THREE.Fog('#c8bca8',40,90);
 const camera=new THREE.PerspectiveCamera(42,window.innerWidth/window.innerHeight,.1,130);
-camera.position.set(0,2,22);
+camera.position.set(0,2,12.8);
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.55));
 renderer.setSize(window.innerWidth,window.innerHeight,false);
@@ -42,6 +45,7 @@ const raycaster=new THREE.Raycaster();
 const pointer=new THREE.Vector2();
 const clickable=[];
 const mannequinGroups=[];
+const shelfTargets=new Map();
 const lights=[];
 const doorPivots=[];
 const elevatorCar=new THREE.Group();
@@ -67,55 +71,61 @@ function rod(parent,start,end,radius,material,radial=8){
   mesh.position.copy(a).add(b).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),direction.normalize());parent.add(mesh);return mesh;
 }
 function makeGate(){
-  const facadeZ=7;
-  box(scene,'store facade left',[6.3,18,.42],[-5.85,9,facadeZ],mats.plasterLight);
-  box(scene,'store facade right',[6.3,18,.42],[5.85,9,facadeZ],mats.plasterLight);
+  const facadeZ=11.5;
+  box(scene,'store facade left',[11,20,.42],[-9.5,10,facadeZ],mats.plasterLight);
+  box(scene,'store facade right',[11,20,.42],[9.5,10,facadeZ],mats.plasterLight);
   box(scene,'store lintel',[5.5,1.25,.52],[0,17.4,facadeZ],mats.darkWood);
-  box(scene,'walnut door frame',[4.65,4.25,.32],[0,2.15,6.77],mats.wood);
-  box(scene,'threshold stone',[5.3,.2,.9],[0,.08,7.1],mats.stone);
+  box(scene,'walnut door frame',[4.65,4.25,.32],[0,2.15,11.25],mats.wood);
+  box(scene,'threshold stone',[5.3,.2,.9],[0,.08,11.6],mats.stone);
   const glass=new THREE.MeshPhysicalMaterial({color:'#b5c1ba',roughness:.25,metalness:.12,transparent:true,opacity:.32});
   for(const side of [-1,1]){
-    const pivot=new THREE.Group();pivot.position.set(side*2.15,0,6.54);scene.add(pivot);doorPivots.push({pivot,side});
+    const pivot=new THREE.Group();pivot.position.set(side*2.15,0,11.02);scene.add(pivot);doorPivots.push({pivot,side});
     box(pivot,'glass entry leaf',[2.12,3.9,.14],[side*-1.05,2.05,0],glass);
     box(pivot,'walnut stile',[.11,4,.18],[side*-2.05,2.05,.02],mats.darkWood);
     const handle=rod(pivot,[side*-1.72,1.9,-.1],[side*-1.72,2.55,-.1],.035,mats.brass);
     handle.name='brass pull';
   }
-  box(scene,'street step',[14,.26,5],[0,-.15,10.3],mats.stone);
+  box(scene,'street step',[24,.26,7],[0,-.15,15.3],mats.stone);
   for(let floor=0;floor<4;floor++){
     const y=5+floor*3.6;
-    box(scene,`upper window dark ${floor}`,[2.15,2.45,.15],[-4.8,y,6.78],mats.darkWood);
-    box(scene,`upper window glass ${floor}`,[1.86,2.16,.06],[-4.8,y,6.68],glass);
-    box(scene,`upper window dark right ${floor}`,[2.15,2.45,.15],[4.8,y,6.78],mats.darkWood);
-    box(scene,`upper window glass right ${floor}`,[1.86,2.16,.06],[4.8,y,6.68],glass);
-    box(scene,`floor front fascia ${floor}`,[17,.2,.44],[0,3.54+floor*3.6,6.86],mats.wood);
+    box(scene,`upper window dark ${floor}`,[2.15,2.45,.15],[-8.4,y,11.82],mats.darkWood);
+    box(scene,`upper window glass ${floor}`,[1.86,2.16,.06],[-8.4,y,11.91],glass);
+    box(scene,`upper window dark right ${floor}`,[2.15,2.45,.15],[8.4,y,11.82],mats.darkWood);
+    box(scene,`upper window glass right ${floor}`,[1.86,2.16,.06],[8.4,y,11.91],glass);
+    box(scene,`floor front fascia ${floor}`,[30,.2,.44],[0,3.54+floor*3.6,11.82],mats.wood);
   }
-  box(scene,'roof fascia',[18,.5,.65],[0,18.4,6.9],mats.darkWood);
+  box(scene,'roof fascia',[30,.5,.65],[0,20.2,11.85],mats.darkWood);
+  const storefrontGlass=new THREE.MeshPhysicalMaterial({color:'#d2d9d2',roughness:.22,metalness:.12,transparent:true,opacity:.22});
+  for(const side of [-1,1]){
+    box(scene,`ground storefront glazing ${side}`,[1.45,3.9,.08],[side*3.18,1.98,11.72],storefrontGlass);
+    rod(scene,[side*3.9,.1,11.76],[side*3.9,3.9,11.76],.035,mats.brass,6);
+  }
 }
 function buildArchitecture(){
-  box(scene,'site ground',[90,.3,100],[0,-.38,0],mat('#938975'));
-  box(scene,'store ground floor',[18,.28,14],[0,0,0],mats.floor);
+  box(scene,'site ground',[110,.3,120],[0,-.38,0],mat('#938975'));
+  box(scene,'store ground floor',[30,.28,23],[0,0,0],mats.floor);
   for(let level=1;level<=4;level++){
     const y=level*3.6;
     if(level===1){
       // The first-floor slab deliberately leaves the entry atrium open.
-      box(scene,'first-floor west balcony',[6.1,.24,14],[-5.7,y,0],mats.floor);
-      box(scene,'first-floor east balcony',[6.1,.24,14],[5.7,y,0],mats.floor);
-      box(scene,'first-floor rear bridge',[5.8,.24,4.1],[0,y,-4.95],mats.floor);
-      box(scene,'atrium front bridge',[5.8,.24,2.1],[0,y,5.95],mats.floor);
-    }else box(scene,`level slab ${level}`,[18,.26,14],[0,y,0],mats.floor);
-    box(scene,`atrium rail ${level} north`,[5.6,.78,.1],[0,y+.42,4.75],mats.brass);
+      box(scene,'first-floor west balcony',[12.25,.24,23],[-8.875,y,0],mats.floor);
+      box(scene,'first-floor east balcony',[12.25,.24,23],[8.875,y,0],mats.floor);
+      box(scene,'first-floor rear bridge',[5.5,.24,5.1],[0,y,-8.95],mats.floor);
+      box(scene,'atrium front bridge',[5.5,.24,2.1],[0,y,10.05],mats.floor);
+    }else box(scene,`level slab ${level}`,[30,.26,23],[0,y,0],mats.floor);
+    box(scene,`atrium rail ${level} north`,[5.6,.78,.1],[0,y+.42,8.7],mats.brass);
     for(const x of [-2.72,2.72])box(scene,`atrium rail ${level} side`,[.1,.78,5.2],[x,y+.42,.1],mats.brass);
     box(scene,`level edge ${level}`,[18,.16,.24],[0,y-.04,6.9],mats.darkWood);
   }
-  box(scene,'rear wall',[18,19,.35],[0,9,-7.2],mats.plaster);
-  box(scene,'left wall',[.35,19,14],[-8.95,9,0],mats.plaster);
-  box(scene,'right wall',[.35,19,14],[8.95,9,0],mats.plaster);
+  box(scene,'rear wall',[30,20,.35],[0,9,-11.7],mats.plaster);
+  box(scene,'left wall',[.35,20,23],[-14.95,9,0],mats.plaster);
+  box(scene,'right wall',[.35,20,23],[14.95,9,0],mats.plaster);
+  box(scene,'store ceiling',[30,.3,23],[0,18.2,0],mats.plasterLight);
   for(let floor=0;floor<5;floor++){
     const base=floor*3.6;
-    for(const z of [-5.5,-2.3,1.2]){
-      box(scene,`wall inset left ${floor} ${z}`,[.06,1.75,1.75],[-8.74,base+2.05,z],mat('#a9ab9e',.3,.08));
-      box(scene,`wall inset right ${floor} ${z}`,[.06,1.75,1.75],[8.74,base+2.05,z],mat('#a9ab9e',.3,.08));
+    for(const z of [-8.5,-4.4,0,4.4,8.2]){
+      box(scene,`wall inset left ${floor} ${z}`,[.06,1.75,1.75],[-14.74,base+2.05,z],mat('#a9ab9e',.3,.08));
+      box(scene,`wall inset right ${floor} ${z}`,[.06,1.75,1.75],[14.74,base+2.05,z],mat('#a9ab9e',.3,.08));
     }
     const lamp=new THREE.PointLight('#ffdfb1',floor===0?1.35:.9,13,2);lamp.position.set(0,base+3.1,-1.2);scene.add(lamp);lights.push(lamp);
     box(scene,`ceiling cove ${floor}`,[10,.08,.12],[0,base+3.46,-4.8],mats.brass);
@@ -214,8 +224,46 @@ function buildRack(floorProducts,floorIndex){
   rod(rack,[-.45,.18,.12],[2.75,.18,.12],.036,metal);
   floorProducts.slice(0,5).forEach((product,index)=>garment(rack,product.mannequinColor,.12+index*.52,1.65,0,product.category==='Jeans'||product.category==='Trousers'?'trouser':'shirt'));
 }
+function buildWallShelves(floorProducts,floorIndex){
+  const base=floorIndex*3.6;
+  const groups=new Map();
+  floorProducts.forEach(product=>{if(!groups.has(product.category))groups.set(product.category,[]);groups.get(product.category).push(product)});
+  const categories=[...groups.entries()];
+  const width=3.15,gap=.18,startX=-categories.length*(width+gap)/2+(width+gap)/2;
+  categories.forEach(([category,items],bay)=>{
+    const x=startX+bay*(width+gap),backZ=-9.95;
+    shelfTargets.set(`${floorIndex}:${category}`,{position:new THREE.Vector3(x,base+1.58,backZ+4.6),target:new THREE.Vector3(x,base+1.3,backZ+.55)});
+    box(scene,`walnut shelf backing ${floorIndex} ${category}`,[width,3.02,.18],[x,base+1.72,backZ],mats.darkWood);
+    box(scene,`shelf side left ${floorIndex} ${category}`,[.1,3.18,1.25],[x-width/2+.05,base+1.72,backZ+.58],mats.wood);
+    box(scene,`shelf side right ${floorIndex} ${category}`,[.1,3.18,1.25],[x+width/2-.05,base+1.72,backZ+.58],mats.wood);
+    for(let level=0;level<4;level++){
+      const shelfY=base+.42+level*.73;
+      box(scene,`folded apparel shelf ${floorIndex} ${category} ${level}`,[width,.11,1.38],[x,shelfY,backZ+.64],mats.wood);
+      const product=items[level%items.length];
+      const color=mat(product.colorHex||product.mannequinColor,.88);
+      const pileX=x-width*.25;
+      for(let layer=0;layer<3;layer++){
+        const garmentWidth=.82-layer*.035;
+        box(scene,`folded ${product.category} ${layer}`,[garmentWidth,.105,.63],[pileX,shelfY+.09+layer*.115,backZ+.58],color);
+        for(let stitch=0;stitch<7;stitch++)box(scene,`fold stitch ${product.id} ${level} ${stitch}`,[.07,.012,.018],[pileX-.25+stitch*.085,shelfY+.09+layer*.115,backZ+.9],mats.light);
+      }
+      const second=items[(level+1)%items.length];
+      if(items.length>1||level===0){
+        const secondColor=mat(second.colorHex||second.mannequinColor,.88);
+        for(let layer=0;layer<2;layer++)box(scene,`folded colorway ${second.category} ${layer}`,[.64-layer*.04,.105,.57],[x+width*.25,shelfY+.09+layer*.12,backZ+.56],secondColor);
+        const pick=new THREE.Mesh(new THREE.BoxGeometry(1.25,.43,.95),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));
+        pick.position.set(x,shelfY+.28,backZ+.56);pick.userData.productId=product.id;scene.add(pick);clickable.push(pick);
+      }
+    }
+    const signCanvas=document.createElement('canvas');signCanvas.width=512;signCanvas.height=96;
+    const ctx=signCanvas.getContext('2d');ctx.fillStyle='#e8dfcf';ctx.fillRect(0,0,512,96);ctx.fillStyle='#4a392a';ctx.font='600 35px sans-serif';ctx.fillText(category.toUpperCase(),24,60);
+    const sign=new THREE.Mesh(new THREE.PlaneGeometry(2.5,.46),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(signCanvas)}));
+    sign.position.set(x,base+3.38,backZ+.12);scene.add(sign);
+  });
+}
 function buildFloorScene(floorId,index){
   const levelY=index*3.6;const floorProducts=products.filter(item=>item.floorId===floorId);
+  buildWallShelves(floorProducts,index);
   const displayProducts=floorProducts.slice(0,4);
   displayProducts.forEach((product,i)=>{
     const x=[-3.4,-.75,2.2,4.2][i],z=[-2.6,-4.3,-2.9,-5.1][i],scale=i===1?1.05:.95;
@@ -224,11 +272,11 @@ function buildFloorScene(floorId,index){
     productSign(product,x,levelY+3.18,z-.02);
   });
   if(floorProducts.length>4)buildRack(floorProducts.slice(4),index);
-  for(let col=0;col<4;col++){
-    const lamp=new THREE.Mesh(new THREE.CylinderGeometry(.22,.32,.08,14),mats.brass);lamp.position.set(-5+col*3.35,levelY+3.25,-5.9);scene.add(lamp);
-    const glow=new THREE.PointLight('#ffe0b5',.55,6,2);glow.position.set(-5+col*3.35,levelY+2.95,-5.9);scene.add(glow);
+  for(let col=0;col<8;col++){
+    const lamp=new THREE.Mesh(new THREE.CylinderGeometry(.22,.32,.08,14),mats.brass);lamp.position.set(-12+col*3.4,levelY+3.25,-6.7);scene.add(lamp);
+    const glow=new THREE.PointLight('#ffe0b5',.45,7,2);glow.position.set(-12+col*3.4,levelY+2.95,-6.7);scene.add(glow);
   }
-  box(scene,`floor rug ${floorId}`,[6,.035,4],[-.15,levelY+.18,-4.6],mat(index%2?'#92826d':'#a7977d'));
+  box(scene,`floor rug ${floorId}`,[8,.035,5],[-.4,levelY+.18,-2.5],mat(index%2?'#92826d':'#a7977d'));
 }
 function buildFurniture(){
   for(let i=0;i<5;i++){
@@ -245,11 +293,11 @@ function buildFurniture(){
 buildArchitecture();
 
 const cameraFrames=[
-  {p:0,position:[0,2,23],target:[0,2.2,6]},
-  {p:.1,position:[0,2,13],target:[0,2.1,6]},
-  {p:.2,position:[0,1.9,8.5],target:[0,2.2,1]},
-  {p:.3,position:[0,1.8,3.4],target:[0,2.4,-2]},
-  {p:.4,position:[0,1.8,-1.8],target:[2,2.2,-4]},
+  {p:0,position:[0,2,12.8],target:[0,2.2,1]},
+  {p:.1,position:[0,2,9],target:[0,2.1,-1]},
+  {p:.2,position:[0,1.9,5.5],target:[0,2.2,-4]},
+  {p:.3,position:[0,1.8,1],target:[0,2.4,-8]},
+  {p:.4,position:[0,1.8,-3.2],target:[2,2.2,-7]},
   {p:.48,position:[3.8,2.1,-3.1],target:[3.3,3.8,-1.7]},
   {p:.54,position:[1.2,4.9,2.2],target:[1.5,4.6,-3.5]},
   {p:.63,position:[-1.8,5.15,1.9],target:[-2.6,5.5,-3.4]},
@@ -275,7 +323,7 @@ function setSceneProgress(progress){
   entranceLight.intensity=THREE.MathUtils.lerp(0,1.35,THREE.MathUtils.smoothstep(scrollProgress,.08,.32));
   const elevatorLevel=Math.max(0,floorData.findIndex(floor=>floor.id===floorFromProgress(scrollProgress)));
   elevatorCar.position.y=THREE.MathUtils.damp(elevatorCar.position.y,.5+elevatorLevel*3.6,.08,1/60);
-  const pose=getCameraPose(scrollProgress);
+  const pose=categoryCameraTarget||getCameraPose(scrollProgress);
   const cameraEase=reducedMotion?1:.09;
   camera.position.lerp(pose.position,cameraEase);
   const targetEase=reducedMotion?1:.1;currentLook.lerp(pose.target,targetEase);camera.lookAt(currentLook);
@@ -287,7 +335,10 @@ function resize(){
   camera.aspect=width/height;camera.fov=width<620?51:42;camera.updateProjectionMatrix();renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,width<620?1.25:1.55));renderer.setSize(width,height,false);
 }
 window.addEventListener('resize',resize);
-renderer.setAnimationLoop(()=>renderer.render(scene,camera));
+renderer.setAnimationLoop(()=>{
+  if(categoryCameraTarget){camera.position.lerp(categoryCameraTarget.position,.055);currentLook.lerp(categoryCameraTarget.target,.055);camera.lookAt(currentLook)}
+  renderer.render(scene,camera);
+});
 
 function getProgressFromScroll(){
   const start=journey.offsetTop;const total=journey.offsetHeight-window.innerHeight;
@@ -297,7 +348,7 @@ function floorFromProgress(progress){
   if(progress<.50)return 'ground';if(progress<.63)return 'first';if(progress<.74)return 'second';if(progress<.85)return 'third';return 'fourth';
 }
 function setActiveFloor(id){
-  const floor=floorData.find(item=>item.id===id)||floorData[0];activeFloor=floor.id;
+  const floor=floorData.find(item=>item.id===id)||floorData[0];if(activeFloor!==floor.id)activeCategory='';activeFloor=floor.id;
   $$('[data-floor-jump]').forEach(button=>{const selected=button.dataset.floorJump===floor.id;button.classList.toggle('active',selected);button.setAttribute('aria-current',selected?'location':'false')});
   $('#active-floor-name').textContent=floor.label;
   $('#active-categories').innerHTML=floor.categories.map(category=>`<span>${category}</span>`).join('');
@@ -318,7 +369,7 @@ function setActiveChapter(index){
 }
 function onScroll(){
   const progress=THREE.MathUtils.clamp(getProgressFromScroll(),0,1);setSceneProgress(progress);
-  const index=Math.min(chapters.length-1,Math.floor(progress*chapters.length));setActiveChapter(index);
+  const index=progress<.5?Math.min(4,Math.floor(progress*10)):progress<.63?5:progress<.74?6:progress<.85?7:progress<.95?8:9;setActiveChapter(index);
   const floorId=floorFromProgress(progress);if(floorId!==activeFloor)setActiveFloor(floorId);
 }
 window.addEventListener('scroll',onScroll,{passive:true});
@@ -326,16 +377,35 @@ setActiveChapter(0);setActiveFloor('ground');onScroll();
 
 function jumpToFloor(id){
   const floor=floorData.find(item=>item.id===id);if(!floor)return;
+  routeToken++;
+  categoryCameraTarget=null;
   const top=journey.offsetTop+(journey.offsetHeight-window.innerHeight)*floor.progress;
   window.scrollTo({top,behavior:reducedMotion?'auto':'smooth'});
   setActiveFloor(id);$('.product-dock').classList.add('open');
 }
+function focusCategory(category){
+  activeCategory=category;
+  categoryCameraTarget=shelfTargets.get(`${floorData.findIndex(floor=>floor.id===activeFloor)}:${category}`)||null;
+  updateActiveCategories();renderDock();$('.product-dock').classList.add('open');
+}
+function jumpToProduct(floorId,category){
+  const floor=floorData.find(item=>item.id===floorId);if(!floor)return;
+  jumpToFloor(floorId);if(!category)return;
+  const token=++routeToken,started=performance.now();
+  const waitForFloor=()=>{
+    if(token!==routeToken)return;
+    if(Math.abs(getProgressFromScroll()-floor.progress)<.025||performance.now()-started>3500){focusCategory(category);return}
+    requestAnimationFrame(waitForFloor);
+  };
+  requestAnimationFrame(waitForFloor);
+}
 $$('[data-floor-jump]').forEach(button=>button.addEventListener('click',()=>jumpToFloor(button.dataset.floorJump)));
 
 function renderDock(){
-  const items=products.filter(item=>item.floorId===activeFloor).slice(0,7);
+  const allFloorItems=products.filter(item=>item.floorId===activeFloor);
+  const items=allFloorItems.filter(item=>!activeCategory||item.category===activeCategory).slice(0,24);
   $('#dock-products').innerHTML=items.map(product=>`<button class="dock-product" data-product-id="${escapeHtml(product.id)}" aria-label="View ${escapeHtml(product.name)}"><img src="${safeImage(product.image)}" alt="" loading="lazy"/><strong>${escapeHtml(product.name)}</strong><small>₹${Number(product.price).toLocaleString('en-IN')} · ${escapeHtml(product.color)}</small></button>`).join('');
-  const floor=floorData.find(item=>item.id===activeFloor);$('#dock-title').textContent=floor?.title||'New arrivals';
+  const floor=floorData.find(item=>item.id===activeFloor);$('#dock-title').textContent=activeCategory||floor?.title||'New arrivals';
 }
 function readCart(){try{return JSON.parse(localStorage.getItem('maison-form-cart')||'[]')}catch{return []}}
 function saveCart(){try{localStorage.setItem('maison-form-cart',JSON.stringify(cart))}catch{}}
@@ -366,7 +436,7 @@ $('#caption-action').addEventListener('click',()=>{
 function openProduct(id){
   const product=productsById.get(id)||products.find(item=>item.id===id);if(!product)return;selectedProduct=product;selectedSize='';
   const floor=floorData.find(item=>item.id===product.floorId);
-  $('#modal-photo').src=product.image;$('#modal-photo').alt=`${product.color} ${product.name}`;
+  $('#modal-photo').src=product.image;$('#modal-photo').alt=`${product.color} ${product.name}`;$('.modal-photo-wrap').dataset.category=product.category;
   $('#modal-floor').textContent=`${floor?.label||'MAISON FORM'} · ${product.audience}`;
   $('#modal-name').textContent=product.name;$('#modal-description').textContent=product.description;
   $('#modal-color').textContent=`COLOUR · ${product.color}`;$('#modal-fit').textContent=`FIT · ${product.fit}`;
@@ -390,13 +460,18 @@ function addProductToMessage(parent,product){
   const card=document.createElement('button');card.className='chat-product';card.dataset.productId=product.id;const image=document.createElement('img');image.src=safeImage(product.image);image.alt='';const text=document.createElement('span'),name=document.createElement('b'),meta=document.createElement('small');name.textContent=product.name;meta.textContent=`${product.color} · ₹${Number(product.price).toLocaleString('en-IN')}`;text.append(name,meta);card.append(image,text);parent.append(card);
 }
 function localRecommendation(message){
-  const text=message.toLowerCase();let floorId='ground';
+  const text=message.toLowerCase();let floorId=/\b(pants?|trousers?|jeans?|denim|shirts?|tees?|jackets?|blazers?)\b/.test(text)?'first':'ground';
   if(/grand|grandparent|senior|दादा|दादी|नाना|नानी|बुजुर्ग/.test(text))floorId='fourth';
   else if(/child|kid|children|बच्च|बेटा|बेटी/.test(text))floorId='third';
   else if(/woman|women|female|ladies|महिल|औरत|लड़क/.test(text))floorId='second';
   else if(/man|men|male|mens|पुरुष|आदमी|लड़के/.test(text))floorId='first';
   const floorItems=products.filter(item=>item.floorId===floorId);
-  const matched=floorItems.filter(item=>`${item.name} ${item.category} ${item.fit} ${item.color} ${item.fabric} ${item.description}`.toLowerCase().split(/\W+/).some(word=>word.length>3&&text.includes(word)));
+  const wantsBottoms=/\b(pants?|trousers?|jeans?|denim|bottoms)\b/.test(text);
+  const matched=floorItems.filter(item=>{
+    if(wantsBottoms&&/trouser|jean/i.test(item.category))return true;
+    const itemText=`${item.name} ${item.category} ${item.fit} ${item.color} ${item.fabric} ${item.description}`.toLowerCase();
+    return itemText.split(/\W+/).some(word=>word.length>3&&text.includes(word));
+  });
   return {floorId,products:(matched.length?matched:floorItems).slice(0,3),reply:`I’d start on the ${floorData.find(item=>item.id===floorId).title.toLowerCase()}. I’m taking you there now. This is a local guide preview until the Gemini key is configured.`};
 }
 async function askStylist(message){
@@ -409,16 +484,18 @@ async function askStylist(message){
     const result=await response.json();waiting.textContent=result.reply;
     if(result.products?.length){result.products.forEach(product=>addProductToMessage(waiting,product))}
     const floor=floorData.find(item=>item.id===result.floorId)||floorData[0];
-    const route=document.createElement('button');route.className='take-me-there';route.textContent=`TAKE ME TO ${floor.label} ↗`;route.addEventListener('click',()=>{jumpToFloor(floor.id);$('.stylist').classList.remove('is-open');$('#stylist-panel').hidden=true;$('.stylist-launch').setAttribute('aria-expanded','false')});waiting.append(route);
+    const category=result.products?.[0]?.category;
+    const route=document.createElement('button');route.className='take-me-there';route.textContent=`TAKE ME TO ${floor.label} ↗`;route.addEventListener('click',()=>{jumpToProduct(floor.id,category);$('.stylist').classList.remove('is-open');$('#stylist-panel').hidden=true;$('.stylist-launch').setAttribute('aria-expanded','false')});waiting.append(route);
     aiHistory.push({role:'assistant',text:result.reply});
     $('#stylist-footnote').textContent='Gemini stylist · catalogue-aware recommendations';
-    jumpToFloor(floor.id);
+    jumpToProduct(floor.id,category);
   }catch(error){
     if(error.message==='preview'){
       const fallback=localRecommendation(message);waiting.textContent=fallback.reply;
       fallback.products.forEach(product=>addProductToMessage(waiting,product));
       const floor=floorData.find(item=>item.id===fallback.floorId);
-      const route=document.createElement('button');route.className='take-me-there';route.textContent=`TAKE ME TO ${floor.label} ↗`;route.addEventListener('click',()=>jumpToFloor(floor.id));waiting.append(route);jumpToFloor(floor.id);
+      const category=fallback.products[0]?.category;
+      const route=document.createElement('button');route.className='take-me-there';route.textContent=`TAKE ME TO ${floor.label} ↗`;route.addEventListener('click',()=>jumpToProduct(floor.id,category));waiting.append(route);jumpToProduct(floor.id,category);
       $('#stylist-footnote').textContent='Local preview guide · add Gemini and MongoDB settings for live catalogue answers';
     }else{waiting.textContent=error.message;$('#stylist-footnote').textContent='Try again, or choose a floor from the guide.'}
   }finally{busy=false;$('#stylist-form button').disabled=false;$('#stylist-input').value='';$('#stylist-input').focus()}
@@ -453,8 +530,16 @@ function updateActiveCategories(){
   const floor=floorData.find(item=>item.id===activeFloor)||floorData[0];
   const available=[...new Set(products.filter(item=>item.floorId===floor.id).map(item=>item.category))];
   const categories=available.length?available:floor.categories;
-  $('#active-categories').innerHTML=categories.slice(0,8).map(category=>`<span>${category}</span>`).join('');
+  $('#active-categories').innerHTML=categories.slice(0,8).map(category=>`<button class="category-chip${activeCategory===category?' active':''}" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`).join('');
 }
+$('#active-categories').addEventListener('click',event=>{
+  const button=event.target.closest('[data-category]');if(!button)return;
+  routeToken++;
+  if(activeCategory===button.dataset.category){activeCategory='';categoryCameraTarget=null;updateActiveCategories();renderDock()}
+  else focusCategory(button.dataset.category);
+});
+window.addEventListener('wheel',()=>{routeToken++;categoryCameraTarget=null},{passive:true});
+window.addEventListener('touchstart',()=>{routeToken++;categoryCameraTarget=null},{passive:true});
 const originalSetActiveFloor=setActiveFloor;
 setActiveFloor=function(id){originalSetActiveFloor(id);updateActiveCategories()};
 loadCatalog();
