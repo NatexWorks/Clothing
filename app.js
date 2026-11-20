@@ -305,13 +305,28 @@ function buildFloorScene(floorId,index){
   if(floorId==='first'){
     buildWallShelves(floorProducts,index);
     const display=[[-8,-3],[-6,-3],[-4,-3],[4,-3],[6,-3],[8,-3],[-8,3],[-6,3],[-4,3],[4,3]];
-    display.forEach(([x,z],i)=>{const product=floorProducts[i%floorProducts.length];mannequin(scene,product,x,levelY,z,.76);productSign(product,x,levelY+3.05,z-.1)});
+    display.forEach(([x,z],i)=>{
+      const product=floorProducts[i%floorProducts.length],figure=mannequin(scene,product,x,levelY,z,.76);
+      const lower=mat(i%2?'#5a6270':'#77745f',.82);
+      if(/Jeans|Trousers/i.test(product.category)){
+        const bottom=trouserMesh(.64,.9,lower,.18);bottom.position.set(0,.96,.13);figure.add(bottom);
+      }else{
+        const skirt=new THREE.Mesh(new THREE.CylinderGeometry(.31,.48,.7,12),mat(product.mannequinColor,.82));skirt.position.set(0,.83,.04);figure.add(skirt);
+      }
+      productSign(product,x,levelY+3.05,z-.1);
+    });
     const metal=mat('#927a5d',.38,.48);
     for(const [x,z,productsInRack] of [[-11,-1,floorProducts.slice(0,4)],[-11,4,floorProducts.slice(4)], [11,-1,floorProducts.slice(2,6)],[11,4,floorProducts.slice(0,3)]]){
       rod(scene,[x,levelY+.25,z],[x,levelY+2.25,z],.055,metal);rod(scene,[x,levelY+2.25,z],[x+(x<0?2.2:-2.2),levelY+2.25,z],.045,metal);
       productsInRack.forEach((p,j)=>garment(scene,p.mannequinColor,x+(x<0?.25:-.25)+(x<0?1:-1)*j*.43,levelY+1.65,z,garmentStyle(p)));
     }
-    for(const [x,z] of [[-2,-.3],[2,-.3],[-2,4],[2,4]])box(scene,'women floor central display table',[2.2,.72,1.25],[x,levelY+.42,z],mats.wood);
+    for(const [tableIndex,[x,z]] of [[-2,-.3],[2,-.3],[-2,4],[2,4]].entries()){
+      box(scene,'women floor central display table',[2.2,.72,1.25],[x,levelY+.42,z],mats.wood);
+      for(let stack=0;stack<3;stack++){
+        const item=floorProducts[(tableIndex+stack)%floorProducts.length],fold=box(scene,'folded womenswear on table',[.86,.14,.66],[x-.38,levelY+.86+stack*.15,z],mat(item.mannequinColor,.88));
+        fold.rotation.y=stack%2?.08:-.06;
+      }
+    }
     box(scene,'women assistant desk',[2.5,1.05,.85],[-4,levelY+.55,8.1],mats.darkWood);
     for(const x of [-5.5,-2.5]){box(scene,'assistant chair seat',[.7,.16,.7],[x,levelY+.48,9.35],mats.brass);box(scene,'assistant chair back',[.7,.8,.14],[x,levelY+.91,9.65],mats.brass)}
     box(scene,'women billing counter',[2.7,1.05,.85],[4,levelY+.55,8.1],mats.darkWood);
